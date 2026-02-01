@@ -15,6 +15,46 @@ body {
 .app-container {
   display: flex;
   height: 100vh;
+  position: relative;
+}
+
+/* Export Controls - Fixed Top Right */
+.export-controls {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.export-controls .btn {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.export-controls .export-progress {
+  position: absolute;
+  top: 3.5rem;
+  right: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0.75rem;
+  background: #2a2a2a;
+  border-radius: 0.5rem;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.export-controls .export-progress.hidden {
+  display: none;
 }
 
 /* Sidebar */
@@ -191,6 +231,65 @@ body {
   border: 1px solid #3a3a3a;
 }
 
+/* Font Packs Display */
+.font-packs-display {
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  background: #1f1f1f;
+  border-radius: 0.375rem;
+  border: 1px solid #3a3a3a;
+}
+
+.font-packs-display.hidden {
+  display: none;
+}
+
+.font-packs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 10rem;
+  overflow-y: auto;
+}
+
+.font-pack-item {
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border-radius: 0.25rem;
+  border: 1px solid #3a3a3a;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.font-pack-item:hover {
+  background: #333;
+}
+
+.font-pack-item.active {
+  background: #4a9eff;
+  border-color: #4a9eff;
+}
+
+.font-pack-name {
+  font-size: 0.875rem;
+  color: #ccc;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.font-pack-item.active .font-pack-name {
+  color: white;
+}
+
+.font-pack-variants {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.font-pack-item.active .font-pack-variants {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* Text Input */
 .text-input {
   width: 100%;
@@ -247,6 +346,21 @@ body {
   cursor: not-allowed;
 }
 
+.form-input[readonly] {
+  background: #1a1a1a;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.fps-info {
+  margin-top: 0.25rem;
+}
+
+.text-muted {
+  color: #888;
+  font-size: 0.7rem;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -296,10 +410,11 @@ body {
 }
 
 .ffmpeg-command {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #4a9eff;
   word-break: break-all;
   display: block;
+  line-height: 1.4;
 }
 
 /* Spacer */
@@ -372,6 +487,19 @@ body {
 
 .full-width {
   width: 100%;
+}
+
+/* Export Progress */
+.export-progress {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #2a2a2a;
+  border-radius: 0.375rem;
+  border: 1px solid #3a3a3a;
+}
+
+.export-progress.hidden {
+  display: none;
 }
 
 /* Main Content */
@@ -468,22 +596,26 @@ body {
 
 /* Scrollbar Styling */
 .sidebar::-webkit-scrollbar,
-.library-letters::-webkit-scrollbar {
+.library-letters::-webkit-scrollbar,
+.font-packs-list::-webkit-scrollbar {
   width: 8px;
 }
 
 .sidebar::-webkit-scrollbar-track,
-.library-letters::-webkit-scrollbar-track {
+.library-letters::-webkit-scrollbar-track,
+.font-packs-list::-webkit-scrollbar-track {
   background: #1a1a1a;
 }
 
 .sidebar::-webkit-scrollbar-thumb,
-.library-letters::-webkit-scrollbar-thumb {
+.library-letters::-webkit-scrollbar-thumb,
+.font-packs-list::-webkit-scrollbar-thumb {
   background: #3a3a3a;
   border-radius: 4px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover,
-.library-letters::-webkit-scrollbar-thumb:hover {
+.library-letters::-webkit-scrollbar-thumb:hover,
+.font-packs-list::-webkit-scrollbar-thumb:hover {
   background: #4a4a4a;
 }

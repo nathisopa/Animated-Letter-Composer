@@ -8,6 +8,28 @@
 </head>
 <body>
   <div class="app-container">
+    <!-- Export Controls - Fixed Top Right -->
+    <div class="export-controls">
+      <button id="export-btn" class="btn btn-success" disabled>
+        💾 Export <span id="export-format-text">WebM</span>
+      </button>
+      
+      <button id="export-png-btn" class="btn btn-secondary" disabled>
+        🖼 PNG Sequence
+      </button>
+
+      <!-- Export Progress -->
+      <div id="export-progress" class="export-progress hidden">
+        <div class="progress-info">
+          <span id="export-status">Exporting...</span>
+          <span id="export-percent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div id="export-progress-bar" class="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Sidebar - Control Panel -->
     <aside class="sidebar">
       <!-- Header -->
@@ -23,12 +45,14 @@
           
           <label class="file-upload-area" for="file-input">
             <div class="upload-icon">📁</div>
-            <div class="upload-text">Drop files here</div>
-            <div class="upload-hint">WebM, PNG sequences, or images</div>
+            <div class="upload-text">Drop files or folders here</div>
+            <div class="upload-hint">WebM, PNG sequences, or font packs</div>
             <input
               type="file"
               id="file-input"
               multiple
+              webkitdirectory
+              directory
               accept="video/webm,.webm,image/png,image/jpeg"
               style="display: none;"
             />
@@ -42,6 +66,11 @@
             <div class="progress-bar-container">
               <div id="progress-bar" class="progress-bar"></div>
             </div>
+          </div>
+
+          <div id="font-packs-display" class="font-packs-display hidden">
+            <div class="library-label">Font Packs</div>
+            <div id="font-packs-list" class="font-packs-list"></div>
           </div>
 
           <div id="library-display" class="library-display hidden">
@@ -60,8 +89,7 @@
             rows="4"
             class="text-input"
             placeholder="Enter text (use Enter for new lines)..."
-          >HELLO
-WORLD</textarea>
+          >AniType</textarea>
         </div>
       </section>
 
@@ -76,20 +104,34 @@ WORLD</textarea>
           <div class="form-group">
             <label class="form-label">Timing Mode</label>
             <select id="timing-mode" class="form-select">
-              <option value="simultaneous">Simultaneous</option>
-              <option value="stagger" selected>Stagger</option>
+              <option value="simultaneous" selected>Simultaneous</option>
+              <option value="stagger">Stagger</option>
             </select>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Stagger (frames)</label>
-              <input type="number" id="stagger-frames" value="6" class="form-input">
+              <input type="number" id="stagger-frames" value="6" class="form-input" disabled>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Duration (frames)</label>
-              <input type="number" id="letter-duration" value="24" class="form-input">
+              <label class="form-label">Duration Mode</label>
+              <select id="duration-mode" class="form-select">
+                <option value="auto" selected>Auto (Longest)</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="custom-duration-group" class="form-group" style="display: none;">
+            <label class="form-label">Custom Duration</label>
+            <div class="form-row">
+              <input type="number" id="custom-duration-value" value="1" step="0.1" class="form-input">
+              <select id="duration-unit" class="form-select">
+                <option value="seconds">Seconds</option>
+                <option value="frames">Frames</option>
+              </select>
             </div>
           </div>
 
@@ -153,13 +195,14 @@ WORLD</textarea>
             <label class="form-label">Format</label>
             <select id="export-format" class="form-select">
               <option value="webm">WebM (VP9 with Alpha)</option>
-              <option value="prores">ProRes 4444 (PNG Sequence)</option>
+              <option value="hevc">HEVC with Alpha (Desktop)</option>
+              <option value="prores">ProRes 4444 (Desktop)</option>
             </select>
           </div>
           
-          <div id="prores-info" class="prores-info hidden">
-            <div class="info-label">FFmpeg command:</div>
-            <code id="ffmpeg-command" class="ffmpeg-command"></code>
+          <div id="desktop-info" class="prores-info hidden">
+            <div class="info-label">Desktop Export Info:</div>
+            <div id="desktop-command" class="ffmpeg-command"></div>
           </div>
         </div>
       </section>
@@ -177,14 +220,6 @@ WORLD</textarea>
             🔄 Reset
           </button>
         </div>
-        
-        <button id="export-btn" class="btn btn-success full-width" disabled>
-          💾 Export <span id="export-format-text">WebM</span>
-        </button>
-        
-        <button id="export-png-btn" class="btn btn-secondary full-width" disabled>
-          🖼 Export PNG Frames
-        </button>
       </div>
     </aside>
 
