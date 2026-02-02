@@ -1,149 +1,280 @@
-![AniType Preview](docs/screenshot.png)
+# AniType - Animated Letter Composer
 
-## How to Use
+Professional text animation tool with embedded FFmpeg. Create stunning animated text sequences with ProRes 4444, WebM, HEVC, and DXV export.
 
-1. Open `index.html` in Chrome or Edge
-2. Upload animated letter files:
-   - PNG sequences (A_001.png, A_002.png…)
-   - or videos with alpha (WebM, ProRes)
-3. Type text using available letters
-4. Click Play to preview
-5. Export PNG, WebM, or ProRes for further use
+## Features
+
+✅ **Multi-line text support** with automatic alignment
+✅ **Font pack system** - Organize letters in folders with variations  
+✅ **Stagger timing** - Letters animate in sequence  
+✅ **Auto FPS detection** from source clips  
+✅ **Professional codecs**:
+  - WebM (VP9 with alpha)
+  - ProRes 4444 (max quality)
+  - HEVC (H.265 with alpha)
+  - DXV (optimized for Resolume)
+✅ **Embedded FFmpeg** - No system installation required  
+✅ **Cross-platform** - Windows, macOS, Linux
 
+---
 
-# AniType
-AniType is a focused kinetic typography tool for generating animated letter compositions with transparency. Built for motion designers, VJs, and creative technologists, it enables custom animated alphabets to be composed into words and phrases, then exported with alpha for professional pipelines.
+## Installation
 
-AniType is not a video editor. It is a type engine.
+### 1. Clone/Download this repository
 
-# Why AniType Exists
+```bash
+git clone https://github.com/yourusername/anitype.git
+cd anitype
+```
 
-Most motion tools are timeline-driven editors. AniType takes a different approach.
+### 2. Install dependencies
 
-AniType treats typography as a system of animated components rather than clips on a timeline. Each letter is an independent animated asset, allowing type to be assembled procedurally, rendered deterministically, and reused across live and real-time environments.
+```bash
+npm install
+```
 
-The tool is designed for workflows where speed, consistency, and alpha preservation matter more than keyframes and audio.
+### 3. Download FFmpeg binaries
 
-# Core Concepts
-Animated Letter Library
+You need to download FFmpeg static builds for each platform you want to support:
 
-Each character is loaded as either:
+#### 🪟 Windows
+- Download: [https://www.gyan.dev/ffmpeg/builds/](https://www.gyan.dev/ffmpeg/builds/)
+- Get: **ffmpeg-release-essentials.zip**
+- Extract `bin/ffmpeg.exe`
+- Place at: `ffmpeg/win/ffmpeg.exe`
 
-A video file with alpha (WebM, ProRes, MKV)
+#### 🍎 macOS
+- Download: [https://evermeet.cx/ffmpeg/](https://evermeet.cx/ffmpeg/)
+- Get: **Universal build** (Intel + Apple Silicon)
+- Place at: `ffmpeg/mac/ffmpeg`
+- Make executable: `chmod +x ffmpeg/mac/ffmpeg`
 
-A PNG image sequence (RGBA)
+#### 🐧 Linux
+- Download: [https://johnvansickle.com/ffmpeg/](https://johnvansickle.com/ffmpeg/)
+- Get: **Static build**
+- Place at: `ffmpeg/linux/ffmpeg`
+- Make executable: `chmod +x ffmpeg/linux/ffmpeg`
 
-Letters are indexed by character and stored in a reusable library. When text is entered, AniType renders only the letters that exist, enabling incomplete or stylized alphabets.
+### 4. Verify FFmpeg structure
 
-# Alpha-First Rendering
+Your project should look like this:
 
-AniType renders exclusively to an alpha-enabled canvas. No background is baked into previews or exports. Transparency is preserved from source assets through final output.
+```
+anitype/
+├── ffmpeg/
+│   ├── win/
+│   │   └── ffmpeg.exe
+│   ├── mac/
+│   │   └── ffmpeg
+│   └── linux/
+│       └── ffmpeg
+├── renderer/
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+├── main.js
+├── preload.js
+└── package.json
+```
 
-# Frame-Driven Playback
+---
 
-Playback is frame-based rather than timeline-based. Frame rate defines animation timing, making outputs predictable, loop-safe, and ideal for batch rendering.
+## Running the App
 
+### Development mode
 
-# Features
+```bash
+npm start
+```
 
-# Letter Composition
+Or with DevTools:
 
-Custom animated alphabets
+```bash
+npm run dev
+```
 
-Adjustable letter spacing
+### Build for production
 
-Multi-character text composition
+```bash
+# Build for current platform
+npm run build
 
-Vertical centering per line
+# Build for specific platforms
+npm run build:win    # Windows
+npm run build:mac    # macOS
+npm run build:linux  # Linux
+```
 
+Built apps will be in the `dist/` folder.
 
-# Preview Engine
+---
 
-Real-time canvas preview
+## Usage
 
-Mixed media support (video and PNG sequences)
+### 1. Load Letter Assets
 
-Frame-accurate playback
+Click **"Drop files or folders here"** and select:
 
+- **PNG sequences** - Name like `A_001.png`, `A_002.png`, `A_003.png`
+- **WebM videos** - Name like `A.webm`, `B.webm` (with alpha channel)
+- **Font packs** - Organize in folders:
+  ```
+  MyFont/
+    Regular/
+      A_001.png, B_001.png, ...
+    Bold/
+      A_001.png, B_001.png, ...
+  ```
 
-# Export Formats
+### 2. Type Your Text
 
-PNG image sequences (RGBA)
+Enter text in the **Text Content** field. Use Enter for multiple lines.
 
-WebM (VP9 with alpha)
+### 3. Adjust Settings
 
-ProRes 4444 (desktop workflow)
+**Animation Timing:**
+- **Simultaneous** - All letters start together
+- **Stagger** - Letters animate in sequence
 
-DXV3 with alpha via Resolume Alley
+**Duration Mode:**
+- **Auto (Longest)** - Uses longest clip duration
+- **Custom** - Set specific duration in seconds or frames
 
+**Layout & Spacing:**
+- Adjust letter spacing, line spacing, and alignment
 
-# Batch Rendering
+### 4. Preview
 
-Fixed-duration renders
+Click **▶ Play** to preview the animation.
 
-Deterministic frame output
+### 5. Export
 
-Designed for automation and scaling
+Click one of the export buttons:
+- **💾 Export WebM** - VP9 with alpha, good compression
+- **💾 Export ProRes** - ProRes 4444, professional quality
+- **💾 Export HEVC** - H.265 with alpha, modern codec
+- **💾 Export DXV** - Optimized for Resolume playback
 
+Progress bar shows:
+1. Rendering frames (0-30%)
+2. Writing to disk (30-55%)
+3. FFmpeg encoding (55-90%)
+4. Cleanup (90-100%)
 
-# DXV and Resolume Workflow
+---
 
-DXV is a proprietary codec and cannot be encoded directly in-browser.
+## File Naming Conventions
 
-AniType follows the official, production-safe workflow:
+### PNG Sequences
+- Format: `LETTER_FRAMENUMBER.png`
+- Examples: `A_001.png`, `A_002.png`, `A_010.png`
+- Numbers can start at any value, will be sorted automatically
 
-Render PNG sequence or ProRes 4444 with alpha
+### Videos
+- Format: `LETTER.webm`
+- Examples: `A.webm`, `B.webm`, `Z.webm`
 
-Convert to DXV3 using Resolume Alley
+### Font Packs
+```
+FontName/
+  ├── Variant1/
+  │   ├── A_001.png
+  │   └── B_001.png
+  └── Variant2/
+      ├── A_001.png
+      └── B_001.png
+```
 
-Import directly into Resolume Arena or Avenue
+---
 
-This ensures GPU-optimized playback and full compatibility with Resolume’s ecosystem.
+## Export Formats
 
+### WebM (VP9)
+- **Alpha channel**: ✅ Yes
+- **Compression**: Good (visually lossless)
+- **Browser support**: Chrome, Firefox, Edge
+- **Use for**: Web playback, social media
 
-# What AniType Is Not
+### ProRes 4444
+- **Alpha channel**: ✅ Yes
+- **Compression**: Visually lossless
+- **File size**: Large
+- **Use for**: Professional editing (Premiere, Final Cut, DaVinci)
 
-Not a non-linear video editor
+### HEVC (H.265)
+- **Alpha channel**: ✅ Yes
+- **Compression**: Excellent
+- **File size**: Small
+- **Use for**: Modern devices, efficient storage
 
-Not an audio-based tool
+### DXV
+- **Alpha channel**: ✅ Yes (BGRA)
+- **Compression**: Hardware accelerated
+- **Use for**: Resolume, live VJ performance
 
-Not a timeline compositor
+---
 
-Not intended for narrative editing
+## Keyboard Shortcuts
 
-Audio is intentionally not a priority. AniType is a typography generation tool, not an editing suite.
+- `Cmd/Ctrl + O` - Open files
+- `Space` - Play/Stop preview
+- `Cmd/Ctrl + E` - Export (prompts for format)
 
+---
 
-# Intended Use Cases
+## Troubleshooting
 
-Kinetic typography loops
+### FFmpeg not found
+- Verify FFmpeg binaries are in the correct location
+- Check permissions: `chmod +x ffmpeg/mac/ffmpeg` (macOS/Linux)
+- Run `npm start` and check console for errors
 
-VJ and live performance visuals
+### Export fails
+- Ensure you have write permissions to the export directory
+- Check FFmpeg status in Export Info section
+- Try a different export format
 
-LED wall content
+### Video files won't load
+- Only WebM format is supported for video input
+- MOV files should be converted to WebM first
+- Use PNG sequences as an alternative
 
-Motion branding assets
+### macOS security warning
+- Right-click the app → Open (first time only)
+- Or: System Preferences → Security → Allow
 
-Generative typography systems
+---
 
-Real-time visual pipelines
+## License
 
+MIT License - see LICENSE file
 
-# Tech Stack
+**FFmpeg Licensing**: This app ships with FFmpeg binaries under the LGPL license. See [FFmpeg.org](https://ffmpeg.org/legal.html) for details.
 
-HTML5 Canvas
+---
 
-JavaScript (framework-agnostic)
+## Credits
 
-Tailwind CSS
+Built with:
+- [Electron](https://www.electronjs.org/)
+- [FFmpeg](https://ffmpeg.org/)
 
-FFmpeg (desktop rendering)
+---
 
-Resolume Alley (DXV encoding)
+## Support
 
-Electron (desktop distribution)
+For issues or questions:
+- Open an issue on GitHub
+- Check console logs (`Cmd/Ctrl + Shift + I`)
+- Verify FFmpeg status in Export Info
 
+---
 
-# Project Status
+## Roadmap
 
-AniType is under active development. Current focus areas include export reliability, batch workflows, and integration with live visual systems rather than UI experimentation.
+- [ ] GPU encoder detection
+- [ ] Real-time FFmpeg progress parsing
+- [ ] Encoder preset profiles
+- [ ] Batch export multiple texts
+- [ ] macOS notarization
+- [ ] Auto-updater
